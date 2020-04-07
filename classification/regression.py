@@ -19,7 +19,7 @@ def linear_regression(X, y, alpha=0.01, epochs=100, k=64):
     """
     return polynomial_regression(X, y, 1, alpha, epochs, k)
 
-def polynomial_regression(X, y, p=2, alpha=0.01, epochs=100, k=64):
+def polynomial_regression(X, y, p=2, alpha=0.01, epochs=100, k=64, l=0):
     """Numerical implementation of polynomial regression.
     
     Args:
@@ -29,6 +29,7 @@ def polynomial_regression(X, y, p=2, alpha=0.01, epochs=100, k=64):
         alpha (float, optional):    learning rate (defaults to 0.01)
         epochs (int, optional):     number of iterations (defaults to 100)
         k (int, optional):          mini-batch size (defaults to 64)
+        l (float, optional):        regularization parameter (defaults to 0)
     
     Returns:
         theta (ndarray[1, p+1]):    regression coefficients (increasing degree)
@@ -38,14 +39,14 @@ def polynomial_regression(X, y, p=2, alpha=0.01, epochs=100, k=64):
     X = np.power(X, np.arange(0, p+1))
 
     # Objective function
-    cost_func = cost.reduce_mean_sse
-    grad_func = cost.reduce_mean_sse_grad
+    cost_func = cost.reduce_mean_sse_reg
+    grad_func = cost.reduce_mean_sse_reg_grad
 
     theta = np.random.rand(1, p+1)
-    theta, *_ = minimize.adam(theta, X, y, cost_func, grad_func, alpha, epochs, k)
+    theta, *_ = minimize.adam(theta, X, y, cost_func, grad_func, alpha, epochs, k, l)
     return theta
 
-def multivariate_regression(X, y, alpha=0.01, epochs=100, k=64):
+def multivariate_regression(X, y, alpha=0.01, epochs=100, k=64, l=0):
     """Numerical implementation of multivariate linear regression.
     
     Args:
@@ -54,6 +55,7 @@ def multivariate_regression(X, y, alpha=0.01, epochs=100, k=64):
         alpha (float, optional):    learning rate (defaults to 0.01)
         epochs (int, optional):     number of iterations (defaults to 100)
         k (int, optional):          mini-batch size (defaults to 64)
+        l (float, optional):        regularization parameter (defaults to 0)
     
     Returns:
         theta (ndarray[1, n+1]):    regression coefficients [[bias, c0, c1, ..., cn]]
@@ -62,9 +64,10 @@ def multivariate_regression(X, y, alpha=0.01, epochs=100, k=64):
     X = np.hstack((np.ones((X.shape[0], 1)), X))
 
     # Objective function
-    cost_func = cost.reduce_mean_sse
-    grad_func = cost.reduce_mean_sse_grad
+    cost_func = cost.reduce_mean_sse_reg
+    grad_func = cost.reduce_mean_sse_reg_grad
 
     theta = np.random.rand(1, X.shape[1])
-    theta, *_ = minimize.adam(theta, X, y, cost_func, grad_func, alpha, epochs, k)
+    theta, *_ = minimize.adam(theta, X, y, cost_func, grad_func, alpha, epochs, k, l)
     return theta
+
