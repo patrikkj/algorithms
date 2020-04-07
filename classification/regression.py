@@ -8,8 +8,8 @@ def linear_regression(X, y, alpha=0.01, epochs=100, k=64):
     """Numerical implementation of simple linear regression.
     
     Args:
-        X (ndarray, [m, 1]):        input features
-        y (ndarray, [m, 1]):        output labels
+        X (ndarray[m, 1]):          input features
+        y (ndarray[m, 1]):          output labels
         alpha (float, optional):    learning rate (defaults to 0.01)
         epochs (int, optional):     number of iterations (defaults to 100)
         k (int, optional):          mini-batch size (defaults to 64)
@@ -23,8 +23,8 @@ def polynomial_regression(X, y, p=2, alpha=0.01, epochs=100, k=64):
     """Numerical implementation of polynomial regression.
     
     Args:
-        X (ndarray, [m, 1]):        input features
-        y (ndarray, [m, 1]):        output labels
+        X (ndarray[m, 1]):          input features
+        y (ndarray[m, 1]):          output labels
         p (int, optional):          degree of polynomial (defaults to 2)
         alpha (float, optional):    learning rate (defaults to 0.01)
         epochs (int, optional):     number of iterations (defaults to 100)
@@ -49,14 +49,14 @@ def multivariate_regression(X, y, alpha=0.01, epochs=100, k=64):
     """Numerical implementation of multivariate linear regression.
     
     Args:
-        X (ndarray, [m, n]):        input features
-        y (ndarray, [m, 1]):        output labels
+        X (ndarray[m, n]):          input features
+        y (ndarray[m, 1]):          output labels
         alpha (float, optional):    learning rate (defaults to 0.01)
         epochs (int, optional):     number of iterations (defaults to 100)
         k (int, optional):          mini-batch size (defaults to 64)
     
     Returns:
-        theta (ndarray[1, n+1]):    regression coefficients [bias; c0; c1; ...; cn]
+        theta (ndarray[1, n+1]):    regression coefficients [[bias, c0, c1, ..., cn]]
     """
     # Create bias feature
     X = np.hstack((np.ones((X.shape[0], 1)), X))
