@@ -1,17 +1,24 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
-import examples
-from .regression import linear_regression, polynomial_regression, multivariate_regression
+
+import dataset_gen
+
+from .regression import (linear_regression, multivariate_regression,
+                         polynomial_regression)
 
 
 def demo_lin_reg():
     # Generate dataset
-    X, y, coeffs = examples.polynomial_fit(50, 1)
+    m = 100
+    X, y, coeffs = dataset_gen.polynomial_fit(m, 1)
 
     # Regression
-    theta, rX = linear_regression(X, y, alpha=0.005, epochs=10000)
+    epochs = 1000
+    theta, rX = linear_regression(X, y, alpha=0.005, k=8, epochs=epochs)
     print("Simple linear regression")
+    print(f"  Number of examples: {m}")
+    print(f"  Epochs: {epochs}")
     print(f"  Actual coeffs: {coeffs}")
     print(f"  Regression coeffs: {theta}\n")
     rX = np.hstack((np.ones(X.shape), X))
@@ -25,14 +32,18 @@ def demo_lin_reg():
 
 def demo_mul_reg():
     # Generate dataset
-    m = 700
-    X, y, coeffs = examples.multivariate_fit(m)
+    m = 100
+    X, y, coeffs, bias = dataset_gen.multivariate_fit(m)
     y = y[..., None]
 
     # Regression
-    theta, rX = multivariate_regression(X, y, alpha=0.005, epochs=10000)
+    epochs = 1000
+    theta, rX = multivariate_regression(X, y, alpha=0.005, k=8, epochs=epochs)
     print("Multivariate regression")
+    print(f"  Number of examples: {m}")
+    print(f"  Epochs: {epochs}")
     print(f"  Actual coeffs: {coeffs}")
+    print(f"  Actual bias: {bias}")
     print(f"  Regression coeffs: {theta}\n")
 
     # Plot data
@@ -40,29 +51,28 @@ def demo_mul_reg():
     ax = Axes3D(fig)
     ax.scatter(X[:, 0], X[:, 1], y)
 
+    fC = np.ones(100)
     fX = X[:, 0].ravel()
-    fY = X[:, 1].ravel()
-    #fZ = ry.ravel()
-    #idx = np.argsort(fX)
-
     fX = np.linspace(fX.min(), fX.max(), 100)
+    fY = X[:, 1].ravel()
     fY = np.linspace(fY.min(), fY.max(), 100)
-    fZ = np.dot(np.vstack((fX, fY)).T, theta.T)
+    fZ = np.dot(np.vstack((fC, fX, fY)).T, theta.T)
 
     ax.scatter(fX, fY, fZ)
-
-    #ax.plot(fX[idx], fY[idx], fZ[idx], "--")
     plt.savefig('demos/demo-mul-reg.png')
     plt.close(fig)
 
 def demo_poly_reg():
     # Generate dataset
-    m, p = 50, 3
-    X, y, coeffs = examples.polynomial_fit(m, p)
+    m, p = 100, 3
+    X, y, coeffs = dataset_gen.polynomial_fit(m, p)
 
     # Regression
-    theta, rX = polynomial_regression(X, y, p=p, alpha=0.005, epochs=10000)
+    epochs = 1000
+    theta, rX = polynomial_regression(X, y, p=p, alpha=0.005, k=8, epochs=epochs)
     print(f"Polynomial regression (p = {p})")
+    print(f"  Number of examples: {m}")
+    print(f"  Epochs: {epochs}")
     print(f"  Actual coeffs: {coeffs}")
     print(f"  Regression coeffs: {theta}\n")
     rX = np.power(X, np.arange(0, p + 1))
