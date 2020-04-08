@@ -33,6 +33,7 @@ def mini_batch_gradient_descent(W, b, X, y, cost_func, grad_func,
     if step_func is None:
         step_func = step_gradient_descent
     metadata = []
+    
     for _ in range(epochs):
         # Shuffle input and labels
         m = X.shape[0]
