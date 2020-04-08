@@ -12,8 +12,8 @@ def mini_batch_gradient_descent(W, b, X, y, cost_func, grad_func,
     Args:
         W (ndarray[n, 1]):                  initial weights
         b (ndarray[1, 1]):                  initial bias
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (W, b, X, y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -61,8 +61,8 @@ def batch_gradient_descent(W, b, X, y, cost_func, grad_func,
     Args:
         W (ndarray[n, 1]):                  initial weights
         b (ndarray[1, 1]):                  initial bias
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (W, b, X, y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -86,8 +86,8 @@ def stochastic_gradient_descent(W, b, X, y, cost_func, grad_func, alpha=0.01, ep
     Args:
         W (ndarray[n, 1]):                  initial weights
         b (ndarray[1, 1]):                  initial bias
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (W, b, X, y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -112,8 +112,8 @@ def momentum_gradient_descent(W, b, X, y, cost_func, grad_func,
     Args:
         W (ndarray[n, 1]):                  initial weights
         b (ndarray[1, 1]):                  initial bias
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (W, b, X, y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -152,8 +152,8 @@ def rmsprop(W, b, X, y, cost_func, grad_func,
     Args:
         W (ndarray[n, 1]):                  initial weights
         b (ndarray[1, 1]):                  initial bias
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (W, b, X, y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -193,8 +193,8 @@ def adam(W, b, X, y, cost_func, grad_func,
     Args:
         W (ndarray[n, 1]):                  initial weights
         b (ndarray[1, 1]):                  initial bias
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (W, b, X, y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)

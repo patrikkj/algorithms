@@ -11,8 +11,8 @@ def mini_batch_gradient_descent(params, X, y, cost_func, grad_func,
 
     Args:
         params (ndarray[1, n]):             initial parameters 
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (params, X, Y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -56,8 +56,8 @@ def batch_gradient_descent(params, X, y, cost_func, grad_func,
 
     Args:
         params (ndarray[1, n]):             initial parameters 
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (params, X, Y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -77,8 +77,8 @@ def stochastic_gradient_descent(params, X, y, cost_func, grad_func, alpha=0.01, 
 
     Args:
         params (ndarray[1, n]):             initial parameters 
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (params, X, Y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -99,8 +99,8 @@ def momentum_gradient_descent(params, X, y, cost_func, grad_func,
 
     Args:
         params (ndarray[1, n]):             initial parameters 
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (params, X, Y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -135,8 +135,8 @@ def rmsprop(params, X, y, cost_func, grad_func,
 
     Args:
         params (ndarray[1, n]):             initial parameters 
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (params, X, Y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
@@ -172,8 +172,8 @@ def adam(params, X, y, cost_func, grad_func,
 
     Args:
         params (ndarray[1, n]):             initial parameters 
-        X (ndarray, [m, ...]):              input features
-        y (ndarray, [m, 1]):                output labels
+        X (ndarray[m, ...]):                input features
+        y (ndarray[m, 1]):                  output labels
         cost_func (... -> float32):         mapping of the form (params, X, Y) -> cost
         grad_func (... -> ndarray[1, n]):   gradients of cost function
         alpha (float, optional):            learning rate (defaults to 0.01)
