@@ -11,42 +11,40 @@ from .regression import (linear_regression, multivariate_regression,
 def demo_lin_reg():
     # Generate dataset
     m = 100
-    X, y, W_true, b_true = dataset_gen.polynomial_fit(m, 1)
+    X, y, coeffs = dataset_gen.polynomial_fit(m, 1)
 
     # Regression
     epochs = 1000
-    W, b = linear_regression(X, y, alpha=0.005, k=8, epochs=epochs)
+    theta, rX = linear_regression(X, y, alpha=0.005, k=8, epochs=epochs)
     print("Simple linear regression")
     print(f"  Number of examples: {m}")
     print(f"  Epochs: {epochs}")
-    print(f"  Actual weight: {W_true.ravel()}")
-    print(f"  Actual bias: {b_true.ravel()}")
-    print(f"  Regression coeff: {W.ravel()}")
-    print(f"  Regression bias: {b.ravel()}\n")
-    reg_y = np.dot(X, W) + b
+    print(f"  Actual coeffs: {coeffs}")
+    print(f"  Regression coeffs: {theta}\n")
+    rX = np.hstack((np.ones(X.shape), X))
+    ry = np.dot(rX, theta)
 
     # Plot data
     fig = plt.figure()
-    plt.plot(X, y, "x", X, reg_y, "-")
+    plt.plot(X, y, "x", X, ry, "-")
     plt.savefig('demos/demo-lin-reg.png')
     plt.close(fig)
-
 
 def demo_mul_reg():
     # Generate dataset
     m = 100
-    X, y, W_true, b_true = dataset_gen.multivariate_fit(m)
+    X, y, coeffs, bias = dataset_gen.multivariate_fit(m)
+    y = y[..., None]
 
     # Regression
     epochs = 1000
-    W, b = multivariate_regression(X, y, alpha=0.005, k=8, epochs=epochs)
+    theta, rX = multivariate_regression(X, y, alpha=0.005, k=8, epochs=epochs)
     print("Multivariate regression")
     print(f"  Number of examples: {m}")
     print(f"  Epochs: {epochs}")
-    print(f"  Actual weights: {W_true.ravel()}")
-    print(f"  Actual bias: {b_true.ravel()}")
-    print(f"  Regression weights: {W.ravel()}")
-    print(f"  Regression bias: {b.ravel()}\n")
+    print(f"  Actual coeffs: {coeffs}")
+    print(f"  Actual bias: {bias}")
+    print(f"  Regression coeffs: {theta}\n")
 
     # Plot data
     fig = plt.figure()
@@ -58,30 +56,27 @@ def demo_mul_reg():
     fX = np.linspace(fX.min(), fX.max(), 100)
     fY = X[:, 1].ravel()
     fY = np.linspace(fY.min(), fY.max(), 100)
-    fZ = np.dot(np.vstack((fX, fY)).T, W) + b
+    fZ = np.dot(np.vstack((fC, fX, fY)).T, theta)
 
     ax.scatter(fX, fY, fZ)
     plt.savefig('demos/demo-mul-reg.png')
     plt.close(fig)
 
-
 def demo_poly_reg():
     # Generate dataset
     m, p = 100, 3
-    X, y, W_true, b_true = dataset_gen.polynomial_fit(m, p)
+    X, y, coeffs = dataset_gen.polynomial_fit(m, p)
 
     # Regression
     epochs = 1000
-    W, b = polynomial_regression(X, y, p=p, alpha=0.005, k=8, epochs=epochs)
+    theta, rX = polynomial_regression(X, y, p=p, alpha=0.005, k=8, epochs=epochs)
     print(f"Polynomial regression (p = {p})")
     print(f"  Number of examples: {m}")
     print(f"  Epochs: {epochs}")
-    print(f"  Actual weights: {W_true.ravel()}")
-    print(f"  Actual bias: {b_true.ravel()}")
-    print(f"  Regression weights: {W.ravel()}")
-    print(f"  Regression bias: {b.ravel()}\n")
-    rX = np.power(X, np.arange(1, p+1))
-    ry = np.dot(rX, W) + b
+    print(f"  Actual coeffs: {coeffs}")
+    print(f"  Regression coeffs: {theta}\n")
+    rX = np.power(X, np.arange(0, p + 1))
+    ry = np.dot(rX, theta)
 
     # Plot data
     fig = plt.figure()
