@@ -101,7 +101,3 @@ def logistic_regression(X, y, alpha=0.01, epochs=100, k=64, l=0):
     W, b, *_ = minimize.adam(W, b, X, y, cost_func,
                              grad_func, alpha, epochs, k, l)
     return W, b
-
-
-# Alias
-binary_classifier = logistic_regression

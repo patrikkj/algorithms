@@ -1,12 +1,6 @@
 import numpy as np
 
-
-# Utils
-def softmax(x):
-    return np.exp(x)/np.sum(np.exp(x))
-
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+from .activations import sigmoid
 
 
 # Regularization

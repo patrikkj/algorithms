@@ -1,11 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib.colors import ListedColormap
 
 import dataset_gen
 
 from .regression import (linear_regression, multivariate_regression,
                          polynomial_regression)
+from .classification import (binary_classifier, multinomial_classifier,
+                             knn_classifier)
 
 
 def demo_lin_reg():
@@ -53,7 +56,6 @@ def demo_mul_reg():
     ax = Axes3D(fig)
     ax.scatter(X[:, 0], X[:, 1], y)
 
-    fC = np.ones(100)
     fX = X[:, 0].ravel()
     fX = np.linspace(fX.min(), fX.max(), 100)
     fY = X[:, 1].ravel()
@@ -90,6 +92,115 @@ def demo_poly_reg():
     plt.close(fig)
 
 
+def demo_binary_classifier():
+    # Generate dataset
+    m = 500
+    X_train, X_test, y_train, y_test = dataset_gen.binary_classification(m)
+
+    # Regression
+    epochs = 1000
+    model = binary_classifier(X_train, y_train, threshold=0.5, epochs=epochs)
+    y_hat = model(X_test)
+    print("Binary classification")
+    print(f"  Number of examples: {m}")
+    print(f"  Epochs: {epochs}")
+    print(f"  Accuracy: {np.mean(y_hat == y_test)}\n")
+
+    # Create color mesh
+    h = 0.02
+    x_min, x_max = X_test[:, 0].min() - .5, X_test[:, 0].max() + .5
+    y_min, y_max = X_test[:, 1].min() - .5, X_test[:, 1].max() + .5
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                         np.arange(y_min, y_max, h))
+    cmap = ListedColormap(plt.cm.tab10.colors[:2])
+
+    # Use model to predict and plot mesh values
+    fig = plt.figure()
+    z = model(np.hstack((xx.reshape(-1, 1), yy.reshape(-1, 1)))).reshape(xx.shape)
+    plt.contourf(xx, yy, z, cmap=cmap, alpha=.8)
+
+    # Plot data
+    plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test.ravel(),
+                cmap=cmap, s=25, alpha=0.8, edgecolors='k')
+    plt.savefig('demos/demo-bin-classifier.png')
+    plt.close(fig)
+
+
+def demo_multi_classifier():
+    # Generate dataset
+    m = 500
+    n_blobs = 3
+    X_train, X_test, y_train, y_test = dataset_gen.multinomial_classification(
+        m, n_blobs)
+
+    # Regression
+    epochs = 1000
+    model = multinomial_classifier(X_train, y_train, epochs=epochs)
+    y_hat = model(X_test)
+    print("Multinomial classification")
+    print(f"  Number of examples: {m}")
+    print(f"  Epochs: {epochs}")
+    print(f"  Accuracy: {np.mean(y_hat == y_test)}\n")
+
+    # Create color mesh
+    h = 0.02
+    x_min, x_max = X_test[:, 0].min() - .5, X_test[:, 0].max() + .5
+    y_min, y_max = X_test[:, 1].min() - .5, X_test[:, 1].max() + .5
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                         np.arange(y_min, y_max, h))
+    cmap = ListedColormap(plt.cm.tab10.colors[:n_blobs])
+
+    # Use model to predict and plot mesh values
+    fig = plt.figure()
+    z = model(np.hstack((xx.reshape(-1, 1), yy.reshape(-1, 1)))).reshape(xx.shape)
+    plt.contourf(xx, yy, z, cmap=cmap, alpha=.8)
+
+    # Plot data
+    plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test.ravel(),
+                cmap=cmap, s=25, alpha=0.8, edgecolors='k')
+    plt.savefig('demos/demo-multi-classifier.png')
+    plt.close(fig)
+
+
+def demo_knn_classifier():
+    # Generate dataset
+    m = 500
+    n_blobs = 5
+    X_train, X_test, y_train, y_test = dataset_gen.multinomial_classification(
+        m, n_blobs)
+
+    # Regression
+    epochs = 1000
+    model = knn_classifier(X_train, y_train, default_k=n_blobs)
+    y_hat = model(X_test)
+    print("K-nearest neighbours classification")
+    print(f"  Number of examples: {m}")
+    print(f"  Epochs: {epochs}")
+    print(f"  Accuracy: {np.mean(y_hat == y_test)}\n")
+
+    # Create color mesh
+    h = 0.1
+    x_min, x_max = X_test[:, 0].min() - .5, X_test[:, 0].max() + .5
+    y_min, y_max = X_test[:, 1].min() - .5, X_test[:, 1].max() + .5
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                         np.arange(y_min, y_max, h))
+    cmap = ListedColormap(plt.cm.tab10.colors[:n_blobs])
+
+    # Use model to predict and plot mesh values
+    fig = plt.figure()
+    z = model(np.hstack((xx.reshape(-1, 1), yy.reshape(-1, 1)))).reshape(xx.shape)
+    plt.pcolormesh(xx, yy, z, cmap=cmap, alpha=.8)
+
+    # Plot data
+    plt.scatter(X_test[:, 0], X_test[:, 1], c=y_test.ravel(),
+                cmap=cmap, s=25, alpha=0.8, edgecolors='k')
+    plt.savefig('demos/demo-knn-classifier.png')
+    plt.close(fig)
+
+
 demo_lin_reg()
 demo_mul_reg()
 demo_poly_reg()
+demo_binary_classifier()
+demo_multi_classifier()
+demo_knn_classifier()
