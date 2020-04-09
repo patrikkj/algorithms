@@ -2,6 +2,7 @@ import numpy as np
 
 from common.activations import sigmoid
 
+from .decision_tree import decision_tree, traverse
 from .regression import logistic_regression
 
 
@@ -97,5 +98,21 @@ def knn_classifier(X, y, default_k=3):
     return model
 
 
-def decision_tree_classifier():
-    pass
+def decision_tree_classifier(X, y, attrs=None):
+    """Builds a decision tree classifier from the dataset provided.
+    
+    In order to classify new data, use:
+        y_hat = model(X)
+    
+    Args:
+        X (ndarray[m, n]):          ground features
+        y (ndarray[m, 1]):          ground labels
+        attrs (tuple, optional):    tuple of attributes to branch on (defaults to all)
+    
+    Returns:
+        model (X -> y_hat):         callable decision tree classifier
+    """
+    tree = decision_tree(X, y, attrs=attrs)
+    def model(X_pred):
+        return np.apply_along_axis(traverse, axis=0, arr=X_pred, args=(tree, ))
+    return model
