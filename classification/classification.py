@@ -116,3 +116,8 @@ def decision_tree_classifier(X, y, attrs=None):
     def model(X_pred):
         return np.apply_along_axis(traverse, axis=0, arr=X_pred, args=(tree, ))
     return model
+
+
+def svm(X, y):
+    # Delegates convex problem optimization to LIBSVM via Sklearn.
+    pass
