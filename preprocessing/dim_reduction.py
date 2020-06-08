@@ -9,7 +9,7 @@ def pca(X, var_retained=0.9):
         var_retained (float, optional):     minimal variance retained by output components (defaults to 0.9)
     
     Returns:
-        [type]: [description]
+        out (ndarray[m, out_dims]):         transformed data
     """
     # Find the covariance matrix
     B = X - np.mean(X, axis=0)
