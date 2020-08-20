@@ -230,3 +230,130 @@ def shell_sort(array):
     return array
 
 
+##########################
+# Linear-time algorithms #
+##########################
+
+def counting_sort(array, k):
+    """Sort using the counting sort algorithm.
+
+    Features:
+        Best case:          ---
+        Average case:       O(n + r)
+        Worst case:         O(n + r)
+        Space complexity:   O(n + r)
+        In-place:           No
+        Stable:             Yes
+    
+    Args:
+        array (list):       array to be sorted
+        k (int):            upper bound for values in 'array'
+    """
+    # Count number of occurences of all k values
+    freqs = [0] * k
+    for val in array:
+        freqs[val - 1] += 1
+
+    # Cumulative counting from left to right
+    # Count denotes number of occurences <= num
+    for i in range(k - 1):
+        freqs[i + 1] += freqs[i]
+
+    sorted_ = [0] * len(array)
+    for val in array[::-1]:
+        index = freqs[val - 1]
+        sorted_[index - 1] = val
+        freqs[val - 1] -= 1
+    return sorted_
+
+
+def bucket_sort(array, k, inner_sort=None):
+    """Sort using the bucket sort algorithm.
+
+    Features:
+        Best case:          --- 
+        Average case:       O(n + k)    /    O(n + r)
+        Worst case:         O(n² * k)   /    O(n + r)
+        Space complexity:   O(n * k)    /    O(n + r)
+        In-place:           No
+        Stable:             Yes
+    
+    Args:
+        array (list):       array to be sorted
+        k (int):            number of buckets
+        inner_sort (func):  sorting algorithm used for sorting buckets
+    """
+    # Set inner sorting regime
+    inner_sort = inner_sort if inner_sort else insertion_sort
+
+    buckets = [list() for _ in range(k)]
+    max_ = max(array)
+    for value in array:
+        buckets[int(k * value / max_)] = value
+    for i, bucket in enumerate(buckets):
+        bucket[i] = inner_sort(bucket)
+    return [elem for buckets in bucket for elem in bucket]
+
+
+def lsd_radix_sort(array, digits=None, inner_sort=None):
+    """Sort using the least significant digit radix sort algorithm.
+
+    Features:
+        Best case:          --- 
+        Average case:       O(n * k/d)
+        Worst case:         O(n * k/d)
+        Space complexity:   O(n + 2^d)
+        In-place:           No
+        Stable:             Yes
+    
+    Args:
+        array (list):       array to be sorted
+        digits (int):       upper bound on num. of digits per value
+        inner_sort (func):  sorting algorithm used for intermediate sorts
+    """
+    # Set inner sorting regime
+    inner_sort = inner_sort if inner_sort else insertion_sort
+
+    # Find max number of digits
+    digits = digits if digits else max(array, key=lambda v: len(str(v)))
+
+    # Zero-pad strings shorter than length 'digits'
+    strings = [str(v).zfill(digits) for v in array]
+
+    # Stable sort on each digit
+    for i in range(digits)[::-1]:
+        d_strings = [(s[i], s) for s in strings]
+        array = [elem[1] for elem in inner_sort(d_strings)]
+    return array
+
+
+def msd_radix_sort(array, digits=None, inner_sort=None):
+    """Sort using the most significant digit radix sort algorithm.
+
+    Features:
+        Best case:          --- 
+        Average case:       O(n * k/d)
+        Worst case:         O(n * k/d)
+        Space complexity:   O(n + 2^d)
+        In-place:           No
+        Stable:             Yes
+    
+    Args:
+        array (list):       array to be sorted
+        digits (int):       upper bound on num. of digits per value
+        inner_sort (func):  sorting algorithm used for intermediate sorts
+    """
+    # Set inner sorting regime
+    inner_sort = inner_sort if inner_sort else insertion_sort
+
+    # Find max number of digits
+    digits = digits if digits else max(array, key=lambda v: len(str(v)))
+
+    # Zero-pad strings shorter than length 'digits'
+    strings = [str(v).zfill(digits) for v in array]
+
+    # Stable sort on each digit
+    for i in range(digits):
+        d_strings = [(s[i], s) for s in strings]
+        array = [elem[1] for elem in inner_sort(d_strings)]
+    return array
