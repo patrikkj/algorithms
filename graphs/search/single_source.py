@@ -26,7 +26,7 @@ def initialize_single_source(graph, start):
 
 @encapsulate('key', 'pi', namespace=g)
 def relax(u, v, w):
-    """Tests whether the best-known way from u to v intercepts w, updates path if true."""
+    """Tests whether the best-known way to v goes via u, updates path if true."""
     if get_key(v) > get_key(u) + w:
         set_key(v, get_key(u) + w)
         set_pi(v, u)
@@ -34,7 +34,7 @@ def relax(u, v, w):
 
 @encapsulate('key', 'pi', namespace=g)
 def relax_dijkstra(u, v, w, decrease_key):
-    """Tests whether the best-known way from u to v intercepts w, updates path if true."""
+    """Tests whether the best-known way to v goes via u, updates path if true."""
     if get_key(v) > get_key(u) + w:
         decrease_key(v, get_key(u) + w)
         set_pi(v, u)
@@ -42,6 +42,17 @@ def relax_dijkstra(u, v, w, decrease_key):
 
 @encapsulate('neighbours', namespace=g)
 def dijkstra(graph, start, **kwargs):
+    """Runs Dijkstra's single source shortest path algorithm on the input graph.
+    Requires weights to be non-negative, and no negative cycles to be present.
+
+    For custom node classes, **kwargs can be used to redirect encapsulated attributes, e.g.:
+        (args, ..., 'neighbours_attr'='neighs') => get_neighbours(node) = node.neighs 
+
+    Args:
+        graph (list, Node):         list of all nodes in graph
+        start (Node):               starting node
+        **kwargs (...):             used to redirect encapsulation attributes
+    """
     # Initialize nodes
     initialize_single_source(graph, start)
 
@@ -52,15 +63,24 @@ def dijkstra(graph, start, **kwargs):
     # Greedy traversal node by node
     while q:
         u = q.extract_min()
-        for v, _ in get_neighbours(u):
+        for v, w in get_neighbours(u):
             # Relax with reference to decrease-key function, lookup using node instead of index
             relax_dijkstra(u, v, w, q.decrease_key_noderef)
 
 
 @encapsulate('neighbours', namespace=g)
 def dijkstra_w(graph, start, w, **kwargs):
-    """
-    Same as 'dijkstra' above, but using a dictionary 'w' of the form (u, v) -> w(u, v)
+    """Runs Dijkstra's single source shortest path algorithm on the input graph.
+    Requires weights to be non-negative, and no negative cycles to be present.
+
+    For custom node classes, **kwargs can be used to redirect encapsulated attributes, e.g.:
+        (args, ..., 'neighbours_attr'='neighs') => get_neighbours(node) = node.neighs 
+
+    Args:
+        graph (list, Node):         list of all nodes in graph
+        start (Node):               starting node
+        w (2D list, float):         weight matrix, w[u][v] = w(u, v)
+        **kwargs (...):             used to redirect encapsulation attributes
     """
     # Initialize nodes
     initialize_single_source(graph, start)
@@ -78,12 +98,26 @@ def dijkstra_w(graph, start, w, **kwargs):
 
 @encapsulate('key', 'neighbours', namespace=g)
 def bellman_ford(graph, start, **kwargs):
+    """Runs Bellman Ford's algorithm on the input graph.
+    Single-source shortest path algorithm which supports negative edge weights.
+
+    For custom node classes, **kwargs can be used to redirect encapsulated attributes, e.g.:
+        (args, ..., 'neighbours_attr'='neighs') => get_neighbours(node) = node.neighs 
+
+    Args:
+        graph (list, Node):         list of all nodes in graph
+        start (Node):               starting node
+        **kwargs (...):             used to redirect encapsulation attributes
+
+    Returns:
+        True if no negative cycle was detected, false otherwise.
+    """
     # Initialize nodes
     initialize_single_source(graph, start)
 
     # Graph traversal
-    for _ in range(len(graph) - 1):         # O(V)
-        # Relax every edge in graph         # O(E)
+    for _ in range(len(graph) - 1):
+        # Relax every edge in graph
         for u in graph:
             for v, w in get_neighbours(u):
                 relax(u, v, w)
@@ -98,6 +132,17 @@ def bellman_ford(graph, start, **kwargs):
 
 @encapsulate('key', 'neighbours', namespace=g)
 def dag_shortest_path(graph, start, **kwargs):
+    """Finds the single-source shortest path in a directed acyclic graph.
+    Allows for negative weights, running time is linear in the number of edges.
+
+    For custom node classes, **kwargs can be used to redirect encapsulated attributes, e.g.:
+        (args, ..., 'neighbours_attr'='neighs') => get_neighbours(node) = node.neighs 
+
+    Args:
+        graph (list, Node):         list of all nodes in graph
+        start (Node):               starting node
+        **kwargs (...):             used to redirect encapsulation attributes
+    """
     # Topological sorting of vertices
     graph.sort(key=get_key)
 
