@@ -40,28 +40,28 @@
 ----
 
 
-#### :children_crossing: Graph algorithms
-##### Traversal
-- Breath-first search (graph & matrix representation)
-- Depth-first search (graph & matrix representation)
-- Topological sorting
-- Djikstra
-- A-star (A*)
-- Greedy-first search
-- Bellman Ford
-- DAG shortest path
-- Floyd Warshall
-- Transitive closure
-- Johnson's
-- Edmond's Karp
-
-##### Minimal spanning trees
-- Prim's algorithm
-- Kruskal's algorithm
-
-#### :heavy_plus_sign: Flow algorithms
-- Ford Fulkerson
-- Maximum bipartite matching
+#### :heavy_check_mark: Graph algorithms
+- Traversal
+  - Breath-first search (graph & matrix representation)
+  - Depth-first search (graph & matrix representation)
+- Single-source shortest path
+  - Topological sorting
+  - Djikstra
+  - Bellman Ford
+  - DAG shortest path
+  - ... Greedy-first search
+  - ... A-star (A*)
+- All-pairs shortest path
+  - Floyd Warshall
+  - Transitive closure
+  - Johnson's
+- Minimal spanning trees
+  - TODO Prim's algorithm
+  - TODO Kruskal's algorithm
+- Maximal flow
+  - Ford Fulkerson
+  - Edmond's Karp
+  - TODO Maximum bipartite matching
 
 
 ----
