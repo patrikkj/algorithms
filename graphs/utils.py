@@ -22,7 +22,7 @@ def _encapsulate(kwargs, default_attrs, namespace=None):
     # Create getters and setters required by nonlocal namespace
     for attr_name, attr_value in attr_map.items():
         _f_name = attr_name.partition('_')[0]
- 
+
         # Create getter
         def get_wrapper(attr_value):
             def get_func(obj):
@@ -39,6 +39,7 @@ def _encapsulate(kwargs, default_attrs, namespace=None):
         _set_name = f"set_{_f_name}"
         g[_set_name] = set_wrapper(attr_value)
 
+
 def encapsulate(*attrs, namespace=None):
     """Creates a global getter and setter for every attribute passed to this decorator
         get_attrname(obj)           ->  obj.attrname
@@ -50,6 +51,7 @@ def encapsulate(*attrs, namespace=None):
             return func(*args, **kwargs)
         return wrapper
     return decorator
+
 
 class Node:
     def __init__(self, ip=None):
@@ -65,21 +67,3 @@ class Node:
             Risk: {str(self.risk):10}\t \
             Pi: {str(self.pi.ip if self.pi else self.pi):10}\t \
             Probability: {str(self.prob):10}"
-
-
-@encapsulate('pi', namespace=g)
-def create_path(node, **kwargs):
-    # Base case
-    if get_pi(node) is None:
-        return [node]
-    return create_path(get_pi(node)) + [node]
-
-
-@encapsulate('color', 'd', 'pi', 'neighbours', namespace=g)
-def find_shortest_path(graph, start, end, **kwargs):
-    # BFS returns end node, with predecessors defining
-    # the shortest path to start node if such path exists.
-    end_node = bfs(graph, start, end, **kwargs)
-
-    if end_node:
-        return create_path(end_node, **kwargs)

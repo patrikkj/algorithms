@@ -1,10 +1,8 @@
-from datastructures.min_heap import MinHeap
-from datastructures.queue import Queue
-from datastructures.stack import Stack
-from functools import reduce
 from copy import deepcopy
-from .utils import encapsulate, Node
 
+from datastructures.min_heap import MinHeap
+
+from ..utils import Node, encapsulate
 
 #################################################################
 #                        DISCLAIMER                             #
@@ -17,7 +15,6 @@ from .utils import encapsulate, Node
 g = globals()
 
 
-# Single source shortest path
 @encapsulate('key', 'pi', namespace=g)
 def initialize_single_source(graph, start):
     """Initializes node attributes for various single-source shortest path algorithms."""
@@ -49,6 +46,7 @@ def dijkstra(graph, start, **kwargs):
     initialize_single_source(graph, start)
 
     # Initialize min-heap using 'key' as priority
+    key_attr = kwargs.get('key_attr', 'key')
     q = MinHeap(graph, key_attr=key_attr)
 
     # Greedy traversal node by node
@@ -68,6 +66,7 @@ def dijkstra_w(graph, start, w, **kwargs):
     initialize_single_source(graph, start)
 
     # Initialize min-heap using 'risk' as priority key
+    key_attr = kwargs.get('key_attr', 'risk')
     q = MinHeap(graph, key_attr=key_attr)
 
     # Greedy traversal node by node
@@ -97,7 +96,7 @@ def bellman_ford(graph, start, **kwargs):
     return True
 
 
-@encapsulate('neighbours', namespace=g)
+@encapsulate('key', 'neighbours', namespace=g)
 def dag_shortest_path(graph, start, **kwargs):
     # Topological sorting of vertices
     graph.sort(key=get_key)
@@ -111,46 +110,46 @@ def dag_shortest_path(graph, start, **kwargs):
             relax(u, v, w)
 
 
+# def main():
+#     n1 = Node(ip=1)
+#     n2 = Node(ip=2)
+#     n3 = Node(ip=3)
+#     n4 = Node(ip=4)
 
+#     n1.neighs = [(n2, 6), (n3, 3)]
+#     n2.neighs = [(n4, 3)]
+#     n3.neighs = [(n4, 4)]
+#     n4.neighs = []
 
-def main():
-    n1 = Node(ip=1)
-    n2 = Node(ip=2)
-    n3 = Node(ip=3)
-    n4 = Node(ip=4)
+#     n1.prob = 1.0
+#     n2.prob = 0.5
+#     n3.prob = 0.75
+#     n4.prob = 0.80
 
-    n1.neighs = [(n2, 6), (n3, 3)]
-    n2.neighs = [(n4, 3)]
-    n3.neighs = [(n4, 4)]
-    n4.neighs = []
+#     graph = [n1, n2, n3, n4]
 
-    n1.prob = 1.0
-    n2.prob = 0.5
-    n3.prob = 0.75
-    n4.prob = 0.80
+#     # Initial state
+#     for node in graph:
+#         print(node)
+#     print()
 
-    graph = [n1, n2, n3, n4]
+#     end = bfs(graph, n1, end=n4, neighbours_attr='neighs')
 
-    # Initial state
-    for node in graph:
-        print(node)
-    print()
+#     ###
+#     from ..utils import create_path
+#     path = create_path(end)
+#     for node in path:
+#         print(node)
+#     ###
 
-    end = bfs(graph, n1, end=n4, neighbours_attr='neighs')
-    path = create_path(end)
-    for node in path:
-        print(node)
+#     # path = find_shortest_path(graph, n1, n4, neighbours_attr='neighs')
+#     # print("Shortest path is:", [node.ip for node in path])
 
-    # path = find_shortest_path(graph, n1, n4, neighbours_attr='neighs')
-    # print("Shortest path is:", [node.ip for node in path])
-
-    # print(floyd_warshall(
-    # [
-    #     [0, 7, 2],
-    #     [float('inf'), 0, float('inf')],
-    #     [float('inf'), 4, 0]
-    # ]))
-
-
+#     # print(floyd_warshall(
+#     # [
+#     #     [0, 7, 2],
+#     #     [float('inf'), 0, float('inf')],
+#     #     [float('inf'), 4, 0]
+#     # ]))
 if __name__ == '__main__':
     main()

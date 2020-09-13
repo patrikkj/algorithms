@@ -1,4 +1,19 @@
-# All-pairs shortest paths
+from copy import deepcopy
+
+from ..utils import Node, encapsulate
+from .single_source import bellman_ford, dijkstra_w, djikstra
+
+#################################################################
+#                        DISCLAIMER                             #
+#    I know that implicitly declaring functions by mutating     #
+#       global namespace is considered very bad practice.       #
+# The purpose of doing it this way was to see if I was able to  #
+#  use higher-order decorators to write working psuedocode. :)  #
+#################################################################
+
+g = globals()
+
+
 def print_all_pairs_shortest_path(PI, i, j):
     """
     PI  Predecessor matrix
@@ -30,6 +45,7 @@ def floyd_warshall(W):
     return D
 
 
+@encapsulate('neighbours', namespace=g)
 def transitive_closure(G, **kwargs):
     """
     The reachability matrix of G, denoted by the transitive closure.
