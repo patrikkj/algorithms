@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 
 # Maximum flow networks (Using linked nodes representation)
 def ford_fulkerson(C, s, t, augmenting_path, **kwargs):

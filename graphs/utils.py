@@ -40,8 +40,7 @@ def _encapsulate(kwargs, default_attrs, namespace=None):
         g[_set_name] = set_wrapper(attr_value)
 
 def encapsulate(*attrs, namespace=None):
-    """
-    Creates a global getter and setter for every attribute passed to this decorator
+    """Creates a global getter and setter for every attribute passed to this decorator
         get_attrname(obj)           ->  obj.attrname
         set_attrname(obj, value)    ->  obj.attrname = value
     """
@@ -67,3 +66,20 @@ class Node:
             Pi: {str(self.pi.ip if self.pi else self.pi):10}\t \
             Probability: {str(self.prob):10}"
 
+
+@encapsulate('pi', namespace=g)
+def create_path(node, **kwargs):
+    # Base case
+    if get_pi(node) is None:
+        return [node]
+    return create_path(get_pi(node)) + [node]
+
+
+@encapsulate('color', 'd', 'pi', 'neighbours', namespace=g)
+def find_shortest_path(graph, start, end, **kwargs):
+    # BFS returns end node, with predecessors defining
+    # the shortest path to start node if such path exists.
+    end_node = bfs(graph, start, end, **kwargs)
+
+    if end_node:
+        return create_path(end_node, **kwargs)
