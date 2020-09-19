@@ -3,6 +3,15 @@ from datastructures.stack import Stack
 
 from ..utils import Node, encapsulate
 
+#################################################################
+#                        DISCLAIMER                             #
+#    I know that implicitly declaring functions by mutating     #
+#       global namespace is considered very bad practice.       #
+# The purpose of doing it this way was to see if I was able to  #
+#  use higher-order decorators to write working psuedocode. :)  #
+#################################################################
+
+g = globals()
 
 @encapsulate('color', 'd', 'pi', 'neighbours', namespace=g)
 def bfs(graph, start, end=None, **kwargs):

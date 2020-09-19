@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from ..utils import Node, encapsulate
-from .single_source import bellman_ford, dijkstra_w, djikstra
+from .single_source import bellman_ford, dijkstra_w, dijkstra
 
 #################################################################
 #                        DISCLAIMER                             #

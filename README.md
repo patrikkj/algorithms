@@ -46,7 +46,7 @@
   - Depth-first search (graph & matrix representation)
 - Single-source shortest path
   - Topological sorting
-  - Djikstra
+  - Dijkstra
   - Bellman Ford
   - DAG shortest path
   - ... Greedy-first search
