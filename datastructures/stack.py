@@ -11,7 +11,7 @@ class Stack():
         self.data.append(x)
         self.top += 1
 
-    def pop(self, ):
+    def pop(self):
         if self.top == -1:
             raise IndexError("Stack is empty!")
         self.top -= 1
