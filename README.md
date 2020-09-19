@@ -42,8 +42,8 @@
 
 #### :heavy_check_mark: Graph algorithms
 - Traversal
-  - Breath-first search (graph & matrix representation)
-  - Depth-first search (graph & matrix representation)
+  - Breath-first search
+  - Depth-first search
 - Single-source shortest path
   - Topological sorting
   - Dijkstra
@@ -56,8 +56,8 @@
   - Transitive closure
   - Johnson's
 - Minimal spanning trees
-  - TODO Prim's algorithm
-  - TODO Kruskal's algorithm
+  - Prim's algorithm
+  - Kruskal's algorithm
 - Maximal flow
   - Ford Fulkerson
   - Edmond's Karp
@@ -86,6 +86,7 @@
 
 
 #### :heavy_check_mark: Data structures
+- Disjoint Set
 - Priority queue
 - Min-heap
 - Max-heap
