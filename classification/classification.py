@@ -5,6 +5,10 @@ from common.activations import sigmoid
 from .decision_tree import decision_tree, traverse
 from .regression import logistic_regression
 
+np.set_printoptions(linewidth=200)
+
+
+
 
 def binary_classifier(X, y, threshold=0.5, **kwargs):
     """Trains a binary classifier from the dataset provided using logistic regression.
@@ -65,7 +69,7 @@ def multinomial_classifier(X, y, **kwargs):
     return model
 
 
-def knn_classifier(X, y, default_k=3):
+def knn_classifier(X, y, default_k=3, norm=2):
     """Builds a K-nearest neighbour classifier from the dataset provided.
 
     In order to classify new data, use:
@@ -79,22 +83,30 @@ def knn_classifier(X, y, default_k=3):
     Returns:
         model (X -> y_hat):     callable knn classifier
     """
-    classes = np.unique(y)
+    #classes = np.unique(y)
 
     def model(X_pred, k=default_k):
         # Euclidean distances from every point to every labeled point
-        distances = np.linalg.norm(X - X_pred[:, np.newaxis, :], axis=-1)
+        distances = np.linalg.norm(X - X_pred[:, np.newaxis, :], axis=-1, ord=norm)
+        print("\nDistance to classified points")
+        print(distances)
 
         # Indices of k nearest neighbours (np.argpartition yields indices
         # s.t. first k elements along axis are ordered)
         indices = np.argpartition(distances, k, axis=-1)[..., :k]
+        print("\nK nearest neighbouring points")
+        print(np.array2string(indices, formatter={'all': lambda e: f'P{e+1:<2}'}))
 
         # Classes of k nearest neighbours
         k_nearest = np.take(y, indices)
+        print("\nClasses of k nearest neighbours")
+        print(np.array2string(k_nearest, formatter={'all': lambda e: f'C{e:<2}'}))
 
         # Find class index of most frequent label among k nearest neighbours
-        mode_indices = np.apply_along_axis(lambda x: np.bincount(x).argmax(), 1, k_nearest)
-        return classes[mode_indices].reshape(-1, 1)
+        most_frequent = np.apply_along_axis(lambda x: np.bincount(x).argmax(), 1, k_nearest).reshape(-1, 1)
+        print("\nPredicted class (most frequent label among k nearest neightbours)")
+        print(np.array2string(most_frequent, formatter={'all': lambda e: f'C{e:<2}'}))
+        return most_frequent
     return model
 
 
