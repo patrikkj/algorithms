@@ -8,6 +8,8 @@ def _gini(values):
     bins = np.bincount(values)
     return 1 - np.sum(np.square(bins / np.sum(bins)))
 
+def _entropy(values):
+    return True
 
 def _gain(parent, children, impurity_func):
     """Measure of information gain between two successive levels of the decition tree."""
