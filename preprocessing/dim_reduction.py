@@ -21,7 +21,7 @@ def pca(X, var_retained=0.9):
     # Sort eigenvectors
     indices = np.argsort(w)[::-1]
     w = w[indices]
-    V = V[..., indices]
+    # V = V[..., indices]
     cumvar = np.cumsum(w / w.sum())
     out_dims = np.searchsorted(cumvar, var_retained) + 1
 
