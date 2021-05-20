@@ -15,28 +15,11 @@ np.set_printoptions(linewidth=300)
 
 
 def run_association():
-    #     string = """T1
-    # BF
-    # ABCDFH
-    # ABF
-    # ABFH
-    # ADEF
-    # ABFH
-    # ABDEFH
-    # AGH
-    # """
+    T_list = ["ACE",  "BCE",    "BCDE", "CDE",   "DE"]
+    T = Transactions(T_list, break_ties="alphabetical-inv")
 
-    # T_list, headers, identifiers = create_table(string, 
-    #         remove_chars={',': ' '}, 
-    #         has_header=False, 
-    #         has_id=True,
-    #         join_items=True)
-    # print(T)
-    T_list = ["BF","ABCDFH","ABF","ABFH","ADEF","ABFH","ABDEFH","AGH"]
-    T = Transactions(T_list)
-
-    MINSUP = 4
-    MINCONF = 0.75
+    MINSUP = 2
+    MINCONF = 0.8
 
     # Initial steps
     sort_to_filtered, I_sorted, I_filtered = sort_filter_transactions(T, MINSUP)
@@ -45,7 +28,8 @@ def run_association():
     F, C = apriori(T, MINSUP, method='fk1_fk1')
 
     # Rule generation
-    filter_func = lambda itemset: sorted(itemset) == sorted('ABH')
+    #filter_func = lambda itemset: sorted(itemset) == sorted('ABH')
+    filter_func = lambda itemset: True
     rules = apriori_rule(F, MINCONF, filter_func=filter_func)
     # rules = apriori_rule(F, MINCONF)
     R = structure_rules(rules)
@@ -116,24 +100,46 @@ def run_decision_tree():
 
 
 def run_dbscan():
-    X = np.array([
-        [1, 1],
-        [2, 1],
-        [2, 4],
-        [2, 5],
-        [4, 1],
-        [5, 1],
-    ])
     # X = np.array([
+    #     [1, 1],
+    #     [2, 1],
     #     [2, 4],
     #     [2, 5],
-    #     [2, 10],
-    #     [2, 11],
-    #     [2, 16],
-    #     [3, 3],
-    #     [3, 10],
-    #     [3, 11],
-    #     [4, 3]
+    #     [4, 1],
+    #     [5, 1],
+    # ])
+    X = np.array([
+        [2, 4],
+        [2, 5],
+        [2, 10],
+        [2, 11],
+        [2, 16],
+        [3, 3],
+        [3, 10],
+        [3, 11],
+        [4, 3]
+    ])
+
+    # Assignment 3 - 2021
+    # X = np.array([
+    #     [1, 1], 
+    #     [3, 3], 
+    #     [3, 4], 
+    #     [2, 4], 
+    #     [6, 5], 
+    #     [7, 6], 
+    #     [7, 8], 
+    #     [6, 10], 
+    #     [12, 4], 
+    #     [5, 11], 
+    #     [6, 11], 
+    #     [5, 10], 
+    #     [16, 8], 
+    #     [11, 9], 
+    #     [13, 8], 
+    #     [10, 7], 
+    #     [12, 8], 
+    #     [15, 3]
     # ])
     min_pts = 4
     eps = 3
@@ -144,18 +150,26 @@ def run_dbscan():
 
 
 def run_hac():
+    # points = (
+    #     Point("P1", 2, 3),
+    #     Point("P2", 4, 5),
+    #     Point("P3", 6, 4),
+    #     Point("P4", 6, 5),
+    #     Point("P5", 7, 5),
+    #     Point("P6", 7, 12),
+    #     Point("P7", 8, 2),
+    #     Point("P8", 8, 10)
+    # )
     points = (
-        Point("P1", 2, 3),
-        Point("P2", 4, 5),
-        Point("P3", 6, 4),
-        Point("P4", 6, 5),
-        Point("P5", 7, 5),
-        Point("P6", 7, 12),
-        Point("P7", 8, 2),
-        Point("P8", 8, 10)
+        Point("A", 4, 3),
+        Point("B", 5, 8),
+        Point("C", 5, 7),
+        Point("D", 9, 2),
+        Point("E", 11, 6),
+        Point("F", 14, 8)
     )
     
-    hac(points, heuristic_func='min', distance_func='manhattan')
+    hac(points, heuristic_func='max', distance_func='euclidean')
 
 
 def run_k_means():
@@ -226,8 +240,8 @@ def run_knn():
 
 
 run_association()
-# run_decision_tree()
-# run_dbscan()
-# run_hac()
-# run_k_means()
-# run_knn()
+#run_decision_tree()
+#run_dbscan()
+#run_hac()
+#run_k_means()
+#run_knn()

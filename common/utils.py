@@ -41,6 +41,9 @@ def print_table(data, model, padding=2, sep_func=None):
     print(sep_line)
 
 
+
+
+
 def create_table(string, remove_chars=',', has_header=True, has_id=True, join_items=False, remove_id_header=True):
     # Remove unwanted delimiters
     if isinstance(remove_chars, dict):
